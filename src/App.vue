@@ -1,82 +1,33 @@
 <template>
-  <section class="container">
-    <user-data :last-name="inputName" :first-name="inputLast" :age="age" ></user-data>
-    <button @click="setNewData">Click</button>
-    <input type="text" placeholder="First Name" v-model="inputName">
-    <input type="text" placeholder="Last Name" ref="lastNameInput">
-    <button @click.prevent="setLastName"> Set Last Name</button>
-  </section>
+  <main>
+    <user-list :users="activeUsers" @list-projects="selectUser"></user-list>
+    <projects-list :user="selectedUser"></projects-list>
+  </main>
 </template>
 
 <script>
-import { reactive , toRefs, ref, provide} from "vue";
-import UserData from "@/components/UserData";
+import USER_DATA from './dummy-data.js';
 
-
-
+import UserList from './components/users/UserList.vue';
+import ProjectsList from './components/projects/ProjectsList.vue';
+import {ref} from 'vue'
 export default {
   components: {
-    UserData
+    UserList,
+    ProjectsList,
   },
   setup(){
+    const selectedUser = ref(null)
+    const activeUsers = USER_DATA
 
-    // const UserName = ref('aaaa')
-    // ref.value
-
-    const inputName = ref('Svjat')
-    const inputLast = ref('Bereziuk')
-    const lastNameInput = ref('')
-
-    console.log(inputLast)
-    console.log(inputName)
-
-    const userName = reactive({
-      name: 'Maxilian',
-      age: 31
-    })
-
-    // const AllName = computed(() =>{
-    //   return inputName.value + ' ' + inputLast.value
-    // })
-
-    // const setInputName = (e) => {
-    //   inputName.value = e.target.value
-    // }
-    // const setInputLast = (e) => {
-    //   inputLast.value = e.target.value
-    // }
-    // setTimeout(()=>{
-    //   // UserName.value
-    //   userName.name = 'Max2'
-    //   userName.age = 25
-    // },1000)
-
-
-    // watch(inputName, (newValues)=>{
-    //   inputName.value = 'old age:' + newValues
-    // })
-
-    const setNewData = () => {
-      userName.age = 32
+    function selectUser (uid) {
+      selectedUser.value = activeUsers.find((usr) => usr.id === uid);
     }
 
-
-    const setLastName = () =>{
-      inputLast.value = lastNameInput.value.value
-      console.log(lastNameInput)
-    }
-
-    provide('userName', userName)
-
-    const userRefs = toRefs(userName)
     return {
-      name: userRefs.name,
-      age: userRefs.age,
-      inputLast,
-      inputName,
-      setLastName,
-      lastNameInput,
-      setNewData
+      activeUsers,
+      selectUser,
+      selectedUser
     }
   }
 };
@@ -86,21 +37,34 @@ export default {
 * {
   box-sizing: border-box;
 }
-
 html {
   font-family: sans-serif;
 }
-
 body {
   margin: 0;
 }
 
-.container {
-  margin: 3rem auto;
-  max-width: 30rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  padding: 1rem;
-  text-align: center;
+main {
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  font: inherit;
+  border: 1px solid #00006b;
+  background-color: transparent;
+  color: #00006b;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+}
+button:hover,
+button:active {
+  background-color: #efefff;
+}
+
+button.selected {
+  background-color: #00006b;
+  color: white;
 }
 </style>
