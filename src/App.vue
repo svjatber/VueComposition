@@ -1,35 +1,17 @@
 <template>
-  <main>
-    <user-list :users="activeUsers" @list-projects="selectUser"></user-list>
-    <projects-list :user="selectedUser"></projects-list>
-  </main>
+  <the-counter></the-counter>
+  <control-center></control-center>
 </template>
 
 <script>
-import USER_DATA from './dummy-data.js';
+import ControlCenter from './components/ControlCenter.vue';
+import TheCounter from './components/TheCounter.vue';
 
-import UserList from './components/users/UserList.vue';
-import ProjectsList from './components/projects/ProjectsList.vue';
-import {ref} from 'vue'
 export default {
   components: {
-    UserList,
-    ProjectsList,
+    ControlCenter,
+    TheCounter,
   },
-  setup(){
-    const selectedUser = ref(null)
-    const activeUsers = USER_DATA
-
-    function selectUser (uid) {
-      selectedUser.value = activeUsers.find((usr) => usr.id === uid);
-    }
-
-    return {
-      activeUsers,
-      selectUser,
-      selectedUser
-    }
-  }
 };
 </script>
 
@@ -37,34 +19,22 @@ export default {
 * {
   box-sizing: border-box;
 }
+
 html {
   font-family: sans-serif;
 }
+
 body {
   margin: 0;
+  text-align: center;
 }
 
-main {
-  display: flex;
-  justify-content: space-around;
-}
-
-button {
-  font: inherit;
-  border: 1px solid #00006b;
-  background-color: transparent;
-  color: #00006b;
-  padding: 0.5rem 1.5rem;
-  cursor: pointer;
-  margin: 0.5rem 0.5rem 0.5rem 0;
-}
-button:hover,
-button:active {
-  background-color: #efefff;
-}
-
-button.selected {
-  background-color: #00006b;
-  color: white;
+.container {
+  margin: 3rem auto;
+  max-width: 30rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  text-align: center;
 }
 </style>
